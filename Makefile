@@ -1,33 +1,27 @@
 CXX = g++
 CXXFLAGS = -g -Wall -Wextra
 
+M_BIN = main
+M_CPP = main.cpp
+M_OBJ = main.o
+C_CPP = calculator.cpp
+C_H	= calculator.h
+C_A	= calculator.a
+C_OBJ = calculator.o
 
-BIN 	 = main
-OBJ		 = main.o
-HEADERS	 = calculator.h
-SLIB	 = calculator.a
-SLIB_OBJ = calculator.o
+all: $(M_BIN)
 
+$(M_BIN): $(M_OBJ) $(C_A)
+	$(CXX) $(CXXFLAGS) $(M_OBJ) -o $(M_BIN) -L. -l:$(C_A)
 
-
-all: $(BIN)
-
-
-$(BIN): $(BIN).o $(SLIB)
-	$(CXX) $(CXXFLAGS) $(BIN).o -o $(BIN) -L. -l:calculator.a
-
-
-$(OBJ): main.cpp
+$(M_OBJ): $(M_CPP)
 	$(CXX) $(CXXFLAGS) -c $<
 
-
-calculator.a: $(SLIB_OBJ)
+$(C_A): $(C_OBJ)
 	$(AR) $(ARFLAGS) $@ $^
 
-
-calculator.o: calculator.cpp $(HEADERS)
+$(C_OBJ): $(C_CPP) $(C_H)
 	$(CXX) $(CXXFLAGS) -c $<
 
-
-clean:
-	rm -rf $(BIN) $(OBJ) $(SLIB) $(SLIB_OBJ)
+clean: 
+	rm -rf $(M_BIN) $(M_OBJ) $(C_A) $(C_OBJ)
